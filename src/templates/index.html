@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>UEFA Euro 2020 Team Performance in 3D</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <style>
-    </style>
-</head>
+
 <body>
-    <script type="text/javascript">          
+    <div class="plotly-div" id="parallel-plot"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">    
+    var parallel_graph_json = {{ data|safe }};
+    Plotly.newPlot('parallel-plot', parallel_graph_json.data, parallel_graph_json.layout);
+    var plot = document.getElementById('parallel-plot');
+        plot.on('plotly_hover', function(data) {
+           console.log(data);
+        });
     </script>
 </body>
-</html>
