@@ -53,21 +53,15 @@ class Preprocessor:
         ).reset_index()
 
         attempts_on_target = match_stats[match_stats['StatsName'] == 'Attempts on target']
-
         attempts_conceded = attempts_on_target.copy()
         attempts_conceded['OpponentTeamID'] = attempts_conceded.apply(
             lambda row: match_stats[(match_stats['MatchID'] == row['MatchID']) & (match_stats['TeamID'] != row['TeamID'])]['TeamID'].values[0],
             axis=1
         )
-        attempts_conceded['OpponentTeamName'] = attempts_conceded.apply(
-            lambda row: match_stats[(match_stats['MatchID'] == row['MatchID']) & (match_stats['TeamID'] != row['TeamID'])]['TeamName'].values[0],
-            axis=1
-        )
-        attempts_conceded_grouped = attempts_conceded.groupby(['TeamID', 'TeamName']).agg({'Value': 'mean'}).reset_index()
-        attempts_conceded_grouped = attempts_conceded_grouped.rename(columns={'Value': 'Attempts on target conceded'})
+        attempts_conceded_grouped = attempts_conceded.groupby(['OpponentTeamID']).agg({'Value': 'mean'}).reset_index()
+        attempts_conceded_grouped = attempts_conceded_grouped.rename(columns={'OpponentTeamID': 'TeamID', 'Value': 'Attempts on target conceded'})
 
-        pivot_df = pivot_df.merge(attempts_conceded_grouped, on=['TeamID', 'TeamName'], how='left')
-
+        pivot_df = pivot_df.merge(attempts_conceded_grouped, on='TeamID', how='left')
         pivot_df.columns.name = None
         pivot_df = pivot_df.rename_axis(None, axis=1)
 
@@ -118,7 +112,7 @@ class Preprocessor:
         
         return normalized_df
 
-    def _get_team_goal_distribution(self,team_id):
+    def _get_team_goal_distribution(self,team_id,file_path):
         """
         Calculates goal distribution (first half, second half, overtime) for a specific team.
 
@@ -128,7 +122,7 @@ class Preprocessor:
         Returns:
         pandas.Series: Series containing goal distribution metrics.
         """
-        match_events_df = pd.read_excel('./static/EURO_2020_DATA.xlsx', sheet_name='Match events')
+        match_events_df = pd.read_excel(file_path, sheet_name='Match events')
 
         team_goals = match_events_df[((match_events_df['TeamFromID'] == team_id) & 
                                     (match_events_df['Event'].isin(['Goal', 'GoalOnPenalty']))) | 
@@ -158,17 +152,24 @@ class Preprocessor:
         match_stats_df = pd.read_excel(file_path, sheet_name='Match Stats')
         id_name_df = match_stats_df.drop_duplicates(subset=['TeamID', 'TeamName'])[['TeamID', 'TeamName']]
 
+        match_info_df = pd.read_excel(file_path, sheet_name='Match information')
+        all_teams = pd.concat([match_info_df['HomeTeamName'], match_info_df['AwayTeamName']])
+
+        match_counts = all_teams.value_counts().reset_index()
+        match_counts.columns = ['TeamName', 'MatchCount']
+
         team_ids = match_stats_df['TeamID'].unique()
 
         goal_distribution_df = pd.DataFrame(index=team_ids, columns=['First Half', 'Second Half', 'Overtime'])
 
         for team_id in team_ids:
-            goal_distribution_df.loc[team_id] = self._get_team_goal_distribution(team_id)
+            goal_distribution_df.loc[team_id] = self._get_team_goal_distribution(team_id, file_path)
 
         goal_distribution_df = goal_distribution_df.merge(id_name_df, left_index=True, right_on='TeamID')
+        goal_distribution_df = goal_distribution_df.merge(match_counts, on='TeamName')
 
         goal_distribution_df.set_index('TeamName', inplace=True)
-        goal_distribution_df = goal_distribution_df[['First Half', 'Second Half', 'Overtime']]
+        goal_distribution_df = goal_distribution_df[['First Half', 'Second Half', 'Overtime', 'MatchCount']]
 
         return goal_distribution_df
     

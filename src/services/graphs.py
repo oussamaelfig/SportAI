@@ -143,13 +143,34 @@ def create_goal_dist_bar_chart(data, team):
     team = str(team).strip()
     
     team_data = data.loc[team]
+    match_count = team_data['MatchCount']
+    team_data = team_data.drop('MatchCount')
+
     plot_df = team_data.reset_index()
     plot_df.columns = ['Period', 'Goals']
 
-    fig = px.bar(plot_df, x='Period', y='Goals', title=f'Goal distribution within a match of {team} during Euro 2020')
-    return fig
+    plot_df['average'] = plot_df['Goals'] / match_count
 
-import plotly.graph_objects as go
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=plot_df['Period'],
+        y=plot_df['Goals'],
+        customdata=plot_df['average'].round(2),
+        hovertemplate='<b>%{x}</b><br>' +
+                      'Total Goals: %{y}<br>' +
+                      'Average per game: %{customdata:.2f}<br>',
+        name=''
+    )) 
+
+    fig.update_layout(
+        title=f'Goal distribution within a match of {team} during Euro 2020',
+        xaxis_title='Period',
+        yaxis_title='Total Goals',
+        showlegend=False
+    )  
+
+    return fig
 
 def create_radar_chart(team_stats, selected_team, selected_team_to_compare):
     """
