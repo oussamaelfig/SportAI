@@ -164,7 +164,7 @@ def create_goal_dist_bar_chart(data, team):
     )) 
 
     fig.update_layout(
-        title=f'Goal distribution within a match of {team} during Euro 2020',
+        title=f'{team}: Goal distribution throughout a match during Euro 2020',
         xaxis_title='Period',
         yaxis_title='Total Goals',
         showlegend=False
@@ -188,6 +188,10 @@ def create_radar_chart(team_stats, selected_team, selected_team_to_compare):
         'Goals', 'Ball Possession', 'Attempts blocked', 'Goals conceded',
         'Attempts on target conceded', 'Attempts on target'
     ]
+    labels_to_plot = [
+        'Goals scored', 'Ball Possession %', 'Attempts blocked', 'Goals conceded',
+        'Attempts on target conceded', 'Attempts on target taken'
+    ]
 
     radar_chart_title = f'{selected_team} Performance Radar Chart'
 
@@ -199,8 +203,9 @@ def create_radar_chart(team_stats, selected_team, selected_team_to_compare):
 
     fig.add_trace(go.Scatterpolar(
         r=norm_data,
-        theta=stats_to_plot,
+        theta=labels_to_plot,
         fill='toself',
+        hoveron='points',
         name=selected_team,
         line=dict(color='blue'),
         hovertemplate='<b>%{theta}</b><br>' +
@@ -216,8 +221,9 @@ def create_radar_chart(team_stats, selected_team, selected_team_to_compare):
 
         fig.add_trace(go.Scatterpolar(
             r=norm_data_compare,
-            theta=stats_to_plot,
+            theta=labels_to_plot,
             fill='toself',
+            hoveron='points',
             name=selected_team_to_compare,
             line=dict(color='red'),
             hovertemplate='<b>%{theta}</b><br>' +
@@ -239,7 +245,8 @@ def create_radar_chart(team_stats, selected_team, selected_team_to_compare):
                 period=6
             ),
         ),
-        title=radar_chart_title
+        title=radar_chart_title,
+        hovermode='closest'
     )
 
     return fig

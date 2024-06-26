@@ -166,6 +166,7 @@ def render_radar_desc(intro):
 def render_bar_desc(intro):
     intro = "This final visualization focuses on a single question to answer: How are goals distributed throughout the game? " \
     "For the selected team, the bar plot displays the number of goals scored in the first half, the second half " \
-    "and in overtime. Hovering on a bar displays the exact number of goals scored by the team in the given half" 
+    "and in overtime. Hovering on a bar displays the exact number of goals scored by the team in the given half, " \
+    "as well as the average number of goals per game scored in this same half."
     return intro
     
