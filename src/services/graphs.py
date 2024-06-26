@@ -18,25 +18,25 @@ def create_offensive_3d_scatter_plot(merged_data,selected_team):
         other_teams_data,
         x='Goals',
         y='Ball Possession',
-        z='Total Attempts',
+        z='Attempts on target',
         color='TeamName',
         color_discrete_sequence=['gray'],
         title='UEFA Euro 2020 Team Offensive Performance in 3D',
-        labels={'Goals': 'Goals Scored', 'Ball Possession': 'Ball Possession (%)', 'Total Attempts': 'Total Shots'},
+        labels={'Goals': 'Goals Scored', 'Ball Possession': 'Ball Possession (%)', 'Attempts on target': 'Attempts on target'},
         opacity=0.6,
         hover_name='TeamName',
-        hover_data={'Goals': True, 'Ball Possession': True, 'Total Attempts': True, 'TeamName': False}
+        hover_data={'Goals': True, 'Ball Possession': True, 'Attempts on target': True, 'TeamName': False}
     )
     fig.add_trace(px.scatter_3d(
         team_data,
         x='Goals',
         y='Ball Possession',
-        z='Total Attempts',
+        z='Attempts on target',
         color_discrete_sequence=['red'],
         color='TeamName',
         opacity=0.9,
         hover_name='TeamName',
-        hover_data={'Goals': True, 'Ball Possession': True, 'Total Attempts': True, 'TeamName': False},
+        hover_data={'Goals': True, 'Ball Possession': True, 'Attempts on target': True, 'TeamName': False},
     ).data[0])
 
     return fig
