@@ -63,7 +63,7 @@ class Preprocessor:
             lambda row: match_stats[(match_stats['MatchID'] == row['MatchID']) & (match_stats['TeamID'] != row['TeamID'])]['TeamName'].values[0],
             axis=1
         )
-        attempts_conceded_grouped = attempts_conceded.groupby(['TeamID', 'TeamName']).agg({'Value': 'sum'}).reset_index()
+        attempts_conceded_grouped = attempts_conceded.groupby(['TeamID', 'TeamName']).agg({'Value': 'mean'}).reset_index()
         attempts_conceded_grouped = attempts_conceded_grouped.rename(columns={'Value': 'Attempts on target conceded'})
 
         pivot_df = pivot_df.merge(attempts_conceded_grouped, on=['TeamID', 'TeamName'], how='left')
