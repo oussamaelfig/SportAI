@@ -126,7 +126,7 @@ def render_3d_desc(intro):
     intro = "This visualization is separated in two parts: offensive performance and defensive performance. " \
     "For the offensive performance, the visualization displays the average value per game of the number of goals scored, " \
     "ball possession percentage, and the number of shots on target taken. For the defensive performance, the " \
-    "visualization displays the average value per game of the number of fouls committed and the number of tackles. " \
+    "visualization displays the average value per game of the number of fouls committed, the number of tackles and the number of saves. " \
     "You can interact with this visualization by turning the box in any direction to get a better estimate of the " \
     "position of the points. You can also get more detailed information by hovering over a particular point. " \
     "Finally, you can filter out teams by unselecting them in the list."
@@ -167,6 +167,6 @@ def render_bar_desc(intro):
     intro = "This final visualization focuses on a single question to answer: How are goals distributed throughout the game? " \
     "For the selected team, the bar plot displays the number of goals scored in the first half, the second half " \
     "and in overtime. Hovering on a bar displays the exact number of goals scored by the team in the given half, " \
-    "as well as the average number of goals per game scored in this same half."
+    "as well as the average number of goals per game scored by the team in this same half."
     return intro
     
