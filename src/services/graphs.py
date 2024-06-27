@@ -22,7 +22,7 @@ def create_offensive_3d_scatter_plot(merged_data,selected_team):
         color='TeamName',
         color_discrete_sequence=['gray'],
         title='UEFA Euro 2020 Team Offensive Performance in 3D',
-        labels={'Goals': 'Goals Scored', 'Ball Possession': 'Ball Possession (%)', 'Attempts on target': 'Attempts on target'},
+        labels={'Goals': 'Goals Scored', 'Ball Possession': 'Ball Possession (%)', 'Attempts on target': 'Shots on target'},
         opacity=0.6,
         hover_name='TeamName',
         hover_data={'Goals': True, 'Ball Possession': True, 'Attempts on target': True, 'TeamName': False}
@@ -104,7 +104,7 @@ def create_parallel_coordinates_plot(merged_data,selected_team):
             dict(range=[merged_data['Ball Possession'].min(), merged_data['Ball Possession'].max()],
                  label='Ball Possession (%)', values=merged_data['Ball Possession']),
             dict(range=[merged_data['Total Attempts'].min(), merged_data['Total Attempts'].max()],
-                 label='Total Attempts', values=merged_data['Total Attempts']),
+                 label='Total Shots', values=merged_data['Total Attempts']),
             dict(range=[merged_data['Goals'].min(), merged_data['Goals'].max()],
                  label='Goals', values=merged_data['Goals']),
             dict(range=[merged_data['Passes completed'].min(), merged_data['Passes completed'].max()],
@@ -188,8 +188,8 @@ def create_radar_chart(team_stats, selected_team, selected_team_to_compare):
         'Attempts on target conceded', 'Attempts on target'
     ]
     labels_to_plot = [
-        'Goals scored', 'Ball Possession %', 'Attempts blocked', 'Goals conceded',
-        'Attempts on target conceded', 'Attempts on target taken'
+        'Goals scored', 'Ball Possession %', 'Shots blocked', 'Goals conceded',
+        'Shots on target conceded', 'Shots on target taken'
     ]
 
     radar_chart_title = f'{selected_team} Performance Radar Chart'
