@@ -111,10 +111,10 @@ def create_parallel_coordinates_plot(merged_data,selected_team):
                  label='Passes Completed', values=merged_data['Passes completed']),
             dict(range=[merged_data['Passes accuracy'].min(), merged_data['Passes accuracy'].max()],
                  label='Passes Accuracy (%)', values=merged_data['Passes accuracy']),
-            dict(range=[merged_data['Attempts on target'].min(), merged_data['Attempts on target'].max()],
-                 label='Attempts on Target', values=merged_data['Attempts on target']),
-            dict(range=[merged_data['Goals conceded'].min(), merged_data['Goals conceded'].max()],
-                 label='Goals Conceded', values=merged_data['Goals conceded']),
+            dict(range=[merged_data['Tackles'].min(), merged_data['Tackles'].max()],
+                 label='Tackles', values=merged_data['Tackles']),
+            dict(range=[merged_data['Attempts blocked'].min(), merged_data['Attempts blocked'].max()],
+                 label='Shots blocked', values=merged_data['Attempts blocked']),
             dict(range=[merged_data['Fouls committed'].min(), merged_data['Fouls committed'].max()],
                  label='Fouls Committed', values=merged_data['Fouls committed']),
         ],
@@ -148,7 +148,6 @@ def create_goal_dist_bar_chart(data, team):
 
     plot_df = team_data.reset_index()
     plot_df.columns = ['Period', 'Goals']
-
     plot_df['average'] = plot_df['Goals'] / match_count
 
     fig = go.Figure()
@@ -156,7 +155,7 @@ def create_goal_dist_bar_chart(data, team):
     fig.add_trace(go.Bar(
         x=plot_df['Period'],
         y=plot_df['Goals'],
-        customdata=plot_df['average'].round(2),
+        customdata=plot_df['average'],
         hovertemplate='<b>%{x}</b><br>' +
                       'Total Goals: %{y}<br>' +
                       'Average per game: %{customdata:.2f}<br>',
