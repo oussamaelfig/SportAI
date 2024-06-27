@@ -12,10 +12,11 @@ class Preprocessor:
         return cls.instance
     
     def __init__(self, file_path=None):
-        if getattr(self, '_initialized', False) is False:
-            self._processed_data = self._load_and_preprocess_data(file_path)
-            self._goal_distribution_df = self._get_goal_distribution_df(file_path)
-            self._initialized = True
+        if getattr(self, '_initialized', False):
+            return
+        self._processed_data = self._load_and_preprocess_data(file_path)
+        self._goal_distribution_df = self._get_goal_distribution_df(file_path)
+        self._initialized = True
 
     def get_processed_data(self):
         return self._processed_data.copy()
